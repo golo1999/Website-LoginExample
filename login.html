@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/Login/styleLogin.css">
+    <title></title>
+</head>
+<body>
+    <div class="main-container">
+        <form action="/" method="POST">
+            <span> <i class="fas fa-user"></i> <input type="text" name="username" id="username-input" placeholder="Username"> </span>
+            <span> <i class="fas fa-lock"></i> <input type="password" name="password" id="password-input" placeholder="Password"> </span>
+            <div class="buttons-container">
+                <input type="submit" id="signin-button" name="button">
+                <input type="submit" id="register-button" name="button">
+            </div>
+            <div class="bottom-container">
+                <span> <input type="checkbox" name="remember_checkbox" id="remember-me-input" class="custom-control-input"> <a id="remember-me"></a> </span>
+                <a href="" id="forgot-password"></a>
+            </div>
+        </form>
+    </div>
+    <script src="/assets/Login/jsLogin.js"></script>
+</body>
+</html>
