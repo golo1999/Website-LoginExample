@@ -19,12 +19,8 @@ app.use(noCache());
 app.use(cookieParser());
 app.set("view engine", "ejs");
 
-function verifyLoginCredentials(username, password, rememberMe, postResponse, postRequest)
+verifyLoginCredentials = (username, password, rememberMe, postResponse) =>
 {   
-    // if(rememberMe==="on") // testing
-    //     console.log("Remember me is ON");
-    // else console.log("Remember me is OFF");
-
     mongoClient.connect(dbURL, {useNewUrlParser: true, useUnifiedTopology: true}, (err, db) => // creating a connection to the database
     {
         const dbObject=db.db("loginDB"); // database name
@@ -57,8 +53,6 @@ function verifyLoginCredentials(username, password, rememberMe, postResponse, po
                             }
 
                             console.log("The passwords match. Hello"); // testing
-                            postRequest.session.username=username; // putting the username into a session variable named username (used in home.ejs)
-                            postRequest.session.auth_type="login"; // putting the authentication type into a session variable named auth_type (used in home.ejs)
                             postResponse.redirect("/home"); // redirecting to the homepage route
                         }
                         else // if the passwords don't match
@@ -66,30 +60,6 @@ function verifyLoginCredentials(username, password, rememberMe, postResponse, po
                             console.log("Sorry, the passwords don't match"); // testing
                             postResponse.redirect("/"); // redirecting back to the start route
                         }
-
-                        // if(result2===true)
-                        // {
-                        //     const addRememberMe=rememberMe==="on" ? "on" : "off"; // if we checked the 'Remember me' checkbox
-
-                        //     if(addRememberMe!==result.remember_me) // if the selected 'Remember me' value is different from the database one
-                        //     {
-                        //         dbObject.collection("users").updateOne({username: username}, {$set: {remember_me: addRememberMe}}, (err) => // updating the 'Remember me' into the database
-                        //         {
-                        //             assert.strictEqual(null, err);
-                        //             console.log(("Remember me has been updated")); // testing
-                        //         });
-                        //     }
-    
-                        //     console.log("The passwords match. Hello"); // testing
-                        //     postRequest.session.username=username; // putting the username into a session variable named username (used in home.ejs)
-                        //     postRequest.session.auth_type="login"; // putting the authentication type into a session variable named auth_type (used in home.ejs)
-                        //     postResponse.redirect("/home"); // redirecting to the homepage route
-                        // }
-                        // else // if the passwords don't match
-                        // {
-                        //     console.log("Sorry, the passwords don't match"); // testing
-                        //     postResponse.redirect("/"); // redirecting back to the start route
-                        // }
                     });
                 })
             }
@@ -102,7 +72,7 @@ function verifyLoginCredentials(username, password, rememberMe, postResponse, po
     });
 }
 
-function verifyRegisterCredentials(username, password, postResponse, postRequest)
+verifyRegisterCredentials = (username, password, postResponse) =>
 {
     mongoClient.connect(dbURL, {useNewUrlParser: true, useUnifiedTopology: true}, (err, db) => // creating a connection to the database
     {
@@ -121,15 +91,12 @@ function verifyRegisterCredentials(username, password, postResponse, postRequest
             {
                 bcrypt.hash(password, saltRounds, (error, hash) =>
                 {
-                    //assert.strictEqual(null, error);
-                    dbObject.collection("users").insertOne({username: username, password: hash, remember_me: "off"}, (err1, result) => // inserting the new user
+                    dbObject.collection("users").insertOne({username: username, password: hash}, (err1, result) => // inserting the new user
                     {
                         assert.strictEqual(null, err1);
                         console.log("user registered successfully");
                         postResponse.cookie('auth_type', 'register', {overwrite: true});
                         postResponse.cookie('username', username, {overwrite: true});
-                        postRequest.session.username=username; // putting the username into a session variable named username (used in home.ejs)
-                        postRequest.session.auth_type="register"; // putting the authentication type into a session variable named auth_type (used in home.ejs)
                         postResponse.redirect("/home"); // redirecting to the homepage route
                         db.close(); // closing the connection to the database
                     });
@@ -138,14 +105,6 @@ function verifyRegisterCredentials(username, password, postResponse, postRequest
         });
     });
 }
-
-// function noCache(req, res, next)
-// {
-//     res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
-//     res.header('Expires', '-1');
-//     res.header('Pragma', 'no-cache');
-//     next();
-// }
 
 app.get("/", (req, res) => // start route
 {
@@ -201,20 +160,12 @@ app.get("/logout", (req, res) => // logout route
         res.clearCookie('user_id');
         res.clearCookie('username');
         res.clearCookie('auth_type');
-        // res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
-        // res.header('Expires', '-1');
-        // res.header('Pragma', 'no-cache');
         res.redirect("/login");
     }
     else // if not all the cookies exist
     {
         res.sendFile(path+'/login.html');
     }
-});
-
-app.get("/register", (req, res) => // register route (not used)
-{
-    res.sendFile(path+'/register.html');
 });
 
 app.post("/", (req, res) => // start post route
@@ -224,10 +175,10 @@ app.post("/", (req, res) => // start post route
     switch(req.body.button) // checking which button was pressed
     {
         case 'Register':
-            verifyRegisterCredentials(req.body.username, req.body.password, res, req);
+            verifyRegisterCredentials(req.body.username, req.body.password, res);
             break;
         case 'Sign in':
-            verifyLoginCredentials(req.body.username, req.body.password, req.body.remember_checkbox, res, req);
+            verifyLoginCredentials(req.body.username, req.body.password, req.body.remember_checkbox, res);
             break;
     }
 });
