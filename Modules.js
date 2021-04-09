@@ -30,7 +30,6 @@ verifyLoginCredentials = (username, password, rememberMe, postResponse) =>
         {
             if(number!=0) // if the username has been found
             {
-                console.log("The username has been found"); // testing
                 dbObject.collection("users").findOne({username: username}, (err, result) =>
                 {
                     assert.strictEqual(null, err);
@@ -52,22 +51,13 @@ verifyLoginCredentials = (username, password, rememberMe, postResponse) =>
                                 postResponse.cookie('auth_type', 'login', {overwrite: true});
                             }
 
-                            console.log("The passwords match. Hello"); // testing
                             postResponse.redirect("/home"); // redirecting to the homepage route
                         }
-                        else // if the passwords don't match
-                        {
-                            console.log("Sorry, the passwords don't match"); // testing
-                            postResponse.redirect("/incorrect-credentials"); // redirecting to the incorrect credentials route
-                        }
+                        else postResponse.redirect("/incorrect-credentials"); // if the passwords don't match, redirecting to the incorrect credentials route
                     });
                 })
             }
-            else // if the username hasn't been found
-            {
-                console.log("The username doesn't exist"); // testing
-                postResponse.redirect("/incorrect-credentials"); // redirecting to the incorrect credentials route
-            }
+            else postResponse.redirect("/incorrect-credentials"); // if the username hasn't been found, redirecting to the incorrect credentials route
         });
     });
 }
@@ -82,11 +72,8 @@ verifyRegisterCredentials = (username, password, postResponse) =>
         
         dbObject.collection("users").find({username: username}).limit(1).count().then((number) => // searching the username in the database
         {
-            if(number!=0) // if the username has been found
-            {
-                console.log("The username already exists"); // testing
-                postResponse.redirect("/incorrect-credentials"); // redirecting to the incorrect credentials route
-            }
+            if(number!=0) // 
+                postResponse.redirect("/incorrect-credentials"); // if the username has been found, redirecting to the incorrect credentials route
             else // if the username doesn't exist into the database
             {
                 bcrypt.hash(password, saltRounds, (error, hash) =>
@@ -94,7 +81,6 @@ verifyRegisterCredentials = (username, password, postResponse) =>
                     dbObject.collection("users").insertOne({username: username, password: hash}, (err1, result) => // inserting the new user
                     {
                         assert.strictEqual(null, err1);
-                        console.log("user registered successfully");
                         postResponse.cookie('auth_type', 'register', {overwrite: true});
                         postResponse.cookie('username', username, {overwrite: true});
                         postResponse.redirect("/home"); // redirecting to the homepage route
@@ -122,19 +108,13 @@ recoverPassword = (username, newPassword, confirmPassword, postResponse) =>
                 {
                     if(newPassword===confirmPassword) // if the two typed passwords match
                     {
-                        console.log("The passwords are the same");
                         dbObject.collection("users").updateOne({username: username}, {$set: {password: newPasswordHash}}, (error1, result) => // updating user's password
                         {
                             assert.strictEqual(null, error1);
-                            console.log("Password updated successfully");
                             postResponse.redirect("/login"); // redirecting to the login route
                         });
                     }
-                    else
-                    {
-                        console.log("The passwords are NOT the same");
-                        postResponse.redirect("/passwords-dont-match"); // redirecting to the passwords don't match route
-                    }
+                    else postResponse.redirect("/passwords-dont-match"); // if the two typed passwords don't match, redirecting to the passwords don't match route
                 });
             }
             else postResponse.redirect("/incorrect-credentials"); // if the username doesn't exist into the database
@@ -142,7 +122,7 @@ recoverPassword = (username, newPassword, confirmPassword, postResponse) =>
     });
 }
 
-app.get("/", (req, res) => // start route
+app.get("/", (req, res) => // root get route
 {
     res.redirect("/login");
 });
@@ -160,9 +140,6 @@ app.get("/login", (req, res) => // login route
     const {cookies}=req;
     if("user_id" in cookies && "username" in cookies && "auth_type" in cookies) // if the three cookies exist
     {
-        console.log("USER ID COOKIE FOUND");
-        console.log("USERNAME COOKIE FOUND");
-        console.log("AUTH_TYPE COOKIE FOUND");
         mongoClient.connect(dbURL, {useNewUrlParser: true, useUnifiedTopology: true}, (err, db) => // creating a connection to the database
         {
             const dbObject=db.db("loginDB"); // database name
@@ -172,20 +149,12 @@ app.get("/login", (req, res) => // login route
             {
                 assert.strictEqual(null, err1);
                 if(result._id.toString()===cookies.user_id) // if the cookie id is equal to the database user id
-                {
-                    console.log("THE IDS ARE THE SAME");
                     res.redirect("/home");
-                }
                 else res.sendFile(path+'/login.html');
             });
         });      
     }
-    else // if not all the cookies exist
-    {
-        console.log("user id cookie NOT found");
-        console.log("username cookie not found");
-        res.sendFile(path+'/login.html');
-    }
+    else res.sendFile(path+'/login.html'); // if not all the cookies exist, redirecting to the login route
 });
 
 app.get("/logout", (req, res) => // logout route
@@ -219,10 +188,8 @@ app.get("/passwords-dont-match", (req, res) =>
     res.render("notFound", {message: "Sorry! The typed passwords don't match", error: 400});
 });
 
-app.post("/", (req, res) => // start post route
+app.post("/", (req, res) => // root post route
 {
-    console.log(req.body); // testing
-
     switch(req.body.button) // checking which button was pressed
     {
         case 'Register':
