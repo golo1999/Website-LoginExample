@@ -14,7 +14,7 @@ recoverButton.onclick=() =>
     const usernameLength=usernameInput.value.trim().length, newPasswordLength=newPasswordInput.value.length, confirmPasswordLength=confirmPasswordInput.value.length;
 
     usernameInput.value=usernameInput.value.trim();
-    //event.preventDefault(); // daca lasam linia asta, nu va fi recunoscut butonul in req.body.button
+
     if(usernameLength>5 && newPasswordLength>7 && confirmPasswordLength>7)
         form.submit();
     else if(usernameLength==0 && newPasswordLength==0 && confirmPasswordLength==0)
