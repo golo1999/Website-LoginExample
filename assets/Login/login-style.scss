@@ -1,41 +1,4 @@
-@mixin centerElementWithTransform
-{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 50vmax;
-    transform: translate(-50%, -50%);
-}
-
-@mixin centerElementWithFlexbox
-{
-    display: flex;
-    justify-content: center;
-    align-items: center; 
-}
-
-$whiteColor: white;
-$secondaryColor: darkslategray;
-$buttonAndInputIconBackgroundColor: deepskyblue;
-
-*
-{
-    box-sizing: border-box;
-    outline: none;
-    margin: 0;
-    padding: 0;
-    border: 0;
-    font-family: 'Poppins', sans-serif;
-}
-
-body::before
-{
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    content: "";
-    background: linear-gradient(90deg, #4568dc, #b06ab3);
-}
+@import "../common-style.scss";
 
 .main-container
 {
