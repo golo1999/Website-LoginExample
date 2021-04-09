@@ -8,7 +8,7 @@ const rememberMeText=document.querySelector("#remember-me");
 const rememberMeInput=document.querySelector("#remember-me-input");
 
 document.querySelector("title").text="Login";
-forgotPassword.textContent="Forgot password?";
+forgotPassword.textContent="Recover password";
 rememberMeText.textContent="Remember me";
 signinButton.value="Sign in";
 registerButton.value="Register";
