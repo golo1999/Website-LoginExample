@@ -42,12 +42,12 @@
                     color: $secondaryColor;
                     font-size: 2vmax;
                 }
-            }        
-        }
 
-        & > span:first-child
-        {
-            margin-top: 0!important;
+                &:first-child
+                {
+                    margin-top: 0!important;
+                }
+            }        
         }
 
         & > .buttons-container
@@ -63,16 +63,16 @@
                 font-weight: bold;
                 padding: .5vmax 0;
                 font-size: 2vmax;
-            }
 
-            & > input:first-child
-            {
-                margin-right: .5vmax;
-            }
+                &:first-child
+                {
+                    margin-right: .5vmax;
+                }
 
-            & > input:nth-child(2)
-            {
-                margin-left: .5vmax;
+                &:nth-child(2)
+                {
+                    margin-left: .5vmax;
+                }
             }
         }
 
