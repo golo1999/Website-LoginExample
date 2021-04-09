@@ -17,8 +17,8 @@ signinButton.onclick=() =>
 {
     const usernameLength=usernameInput.value.trim().length, passwordLength=passwordInput.value.length;
 
-    usernameInput.value=usernameInput.value.trim();
-    //event.preventDefault(); // daca lasam linia asta, nu va fi recunoscut butonul in req.body.button
+    usernameInput.value=usernameInput.value.trim(); // removing the spaces from the start and from the end of the username (if they exist)
+    //event.preventDefault(); // if we use this line, the button wouldn't be recognized in req.body.button
     if(usernameLength>5 && passwordLength>7)
         form.submit();
     else if(usernameLength==0 && passwordLength==0)
