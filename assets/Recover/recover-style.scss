@@ -42,12 +42,12 @@
                     color: $secondaryColor;
                     font-size: 2vmax;
                 }
-            }        
-        }
-
-        & > span:first-child
-        {
-            margin-top: 0!important;
+            }
+            
+            &:first-child
+            {
+                margin-top: 0!important;
+            }
         }
 
         & > input
