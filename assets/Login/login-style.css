@@ -92,7 +92,7 @@ body::before {
   font-size: 2vmax;
 }
 
-.main-container > form > span:first-child {
+.main-container > form > span > input:first-child {
   margin-top: 0 !important;
 }
 
