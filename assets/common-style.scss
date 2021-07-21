@@ -1,5 +1,4 @@
-@mixin centerElementWithTransform
-{
+@mixin centerElementWithTransform {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -7,19 +6,16 @@
     transform: translate(-50%, -50%);
 }
 
-@mixin centerElementWithFlexbox
-{
+@mixin centerElementWithFlexbox {
     display: flex;
     justify-content: center;
-    align-items: center; 
+    align-items: center;
 }
 
 $whiteColor: white;
 $secondaryColor: darkslategray;
 $buttonAndInputIconBackgroundColor: deepskyblue;
-
-*
-{
+* {
     box-sizing: border-box;
     outline: none;
     margin: 0;
@@ -28,8 +24,7 @@ $buttonAndInputIconBackgroundColor: deepskyblue;
     font-family: 'Poppins', sans-serif;
 }
 
-body::before
-{
+body::before {
     position: absolute;
     width: 100%;
     height: 100%;

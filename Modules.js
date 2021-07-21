@@ -50,7 +50,7 @@ verifyLoginCredentials = (username, password, rememberMe, postResponse) => {
                             // redirecting to the homepage route
                             postResponse.redirect('/home');
                         }
-                        // if the passwords don't match, redirecting to the incorrect credentials route
+                        // redirecting to the incorrect credentials route if the passwords don't match
                         else {
                             postResponse.redirect('/incorrect-credentials');
                         }
@@ -114,13 +114,13 @@ recoverPassword = (username, newPassword, confirmPassword, postResponse) => {
                     // if the two typed passwords match
                     if (newPassword === confirmPassword) {
                         // updating user's password
-                        dbObject.collection('users')
-                            .updateOne({ username: username }, { $set: { password: newPasswordHash } },
-                                (error1, result) => {
-                                    assert.strictEqual(null, error1);
-                                    // redirecting to the login route
-                                    postResponse.redirect('/login');
-                                });
+                        dbObject.collection('users').updateOne(
+                            { username: username }, { $set: { password: newPasswordHash } }, (error1, result) => {
+                                assert.strictEqual(null, error1);
+                                // redirecting to the login route
+                                postResponse.redirect('/login');
+                            }
+                        );
                     }
                     // if the two typed passwords don't match, redirecting to the passwords don't match route
                     else {
@@ -144,15 +144,11 @@ app.get('/', (req, res) => {
 // home page route
 app.get('/home', (req, res) => {
     const { cookies } = req;
-    // if the two cookies exist
-    if ('username' in cookies && 'auth_type' in cookies) {
-        // sending the variables to the home.ejs to be rendered
-        res.render('home', { username: cookies.username, auth_type: cookies.auth_type });
-    }
-    // if the two cookies doesn't exist
-    else {
+    // sending the variables to the home.ejs to be rendered if the two cookies exist
+    // else redirecting to the login route
+    ('username' in cookies && 'auth_type' in cookies) ?
+        res.render('home', { username: cookies.username, auth_type: cookies.auth_type }) :
         res.redirect('/login');
-    }
 });
 
 // login route
@@ -168,18 +164,17 @@ app.get('/login', (req, res) => {
             assert.strictEqual(null, err);
             dbObject.collection('users').findOne({ username: cookies.username }, { username: 1 }, (err1, result) => {
                 assert.strictEqual(null, err1);
-                // if the cookie id is equal to the database user id
-                if (result._id.toString() === cookies.user_id) {
-                    res.redirect('/home');
-                }
-                else {
-                    res.sendFile(path + '/login.html');
-                }
+                // redirecting to the home route if the cookie id is equal to the database user id
+                // else redirecting to the login route
+                result._id.toString() === cookies.user_id ?
+                    res.redirect('/home') : res.sendFile(path + '/login.html');
             });
         });
     }
-    // if not all the cookies exist, redirecting to the login route
-    else { res.sendFile(path + '/login.html'); }
+    // redirecting to the login route if at least one cookie doesn't exist
+    else {
+        res.sendFile(path + '/login.html');
+    }
 });
 
 // logout route
@@ -215,8 +210,8 @@ app.get('/passwords-dont-match', (req, res) => {
 
 // root post route
 app.post('/', (req, res) => {
-    switch (req.body.button) // checking which button was pressed
-    {
+    // checking which button was pressed
+    switch (req.body.button) {
         case 'Register':
             verifyRegisterCredentials(req.body.username, req.body.password, res);
             break;

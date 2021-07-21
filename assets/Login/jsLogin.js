@@ -1,100 +1,81 @@
-const form=document.querySelector("form");
-const usernameInput=document.querySelector("input[type=text]");
-const passwordInput=document.querySelector("input[type=password]");
-const signinButton=document.querySelector("#signin-button");
-const registerButton=document.querySelector("#register-button");
-const forgotPassword=document.querySelector("#forgot-password");
-const rememberMeText=document.querySelector("#remember-me");
-const rememberMeInput=document.querySelector("#remember-me-input");
+const form = document.querySelector('form');
+const usernameInput = document.querySelector('input[type=text]');
+const passwordInput = document.querySelector('input[type=password]');
+const signinButton = document.querySelector('#signin-button');
+const registerButton = document.querySelector('#register-button');
+const forgotPassword = document.querySelector('#forgot-password');
+const rememberMeText = document.querySelector('#remember-me');
+const rememberMeInput = document.querySelector('#remember-me-input');
 
-document.querySelector("title").text="Login";
-forgotPassword.textContent="Recover password";
-rememberMeText.textContent="Remember me";
-signinButton.value="Sign in";
-registerButton.value="Register";
+document.querySelector('title').text = 'Login';
+forgotPassword.textContent = 'Recover password';
+rememberMeText.textContent = 'Remember me';
+signinButton.value = 'Sign in';
+registerButton.value = 'Register';
 
-signinButton.onclick=() =>
-{
-    const usernameLength=usernameInput.value.trim().length, passwordLength=passwordInput.value.length;
+signinButton.onclick = () => {
+    const usernameLength = usernameInput.value.trim().length;
+    const passwordLength = passwordInput.value.length;
+    // removing the spaces from the start and from the end of the username (if they exist)
+    usernameInput.value = usernameInput.value.trim();
 
-    usernameInput.value=usernameInput.value.trim(); // removing the spaces from the start and from the end of the username (if they exist)
-    //event.preventDefault(); // if we use this line, the button wouldn't be recognized in req.body.button
-    if(usernameLength>5 && passwordLength>7)
+    // if we use this line, the button wouldn't be recognized in req.body.button
+    //event.preventDefault(); 
+
+    if (usernameLength > 5 && passwordLength > 7) {
         form.submit();
-    else if(usernameLength==0 && passwordLength==0)
-    {
-        alert("Username and password should not be empty");
+    } else if (usernameLength == 0 && passwordLength == 0) {
+        alert('Username and password should not be empty');
         return false;
-    }
-    else if(usernameLength==0)
-    {
-        alert("Username should not be empty");
+    } else if (usernameLength == 0) {
+        alert('Username should not be empty');
         return false;
-    }
-    else if(passwordLength==0)
-    {
-        alert("Password should not be empty");
+    } else if (passwordLength == 0) {
+        alert('Password should not be empty');
         return false;
-    }
-    else if(usernameLength<6 && passwordLength<8)
-    {
-        alert("Username should have at least 6 characters and password should have at least 8 characters");
+    } else if (usernameLength < 6 && passwordLength < 8) {
+        alert('Username should have at least 6 characters and password should have at least 8 characters');
         return false;
-    }
-    else if(usernameLength<6)
-    {
-        alert("Username should have at least 6 characters");
+    } else if (usernameLength < 6) {
+        alert('Username should have at least 6 characters');
         return false;
-    }
-    else if(passwordLength<8)
-    {
-        alert("Password should have at least 8 characters");
+    } else if (passwordLength < 8) {
+        alert('Password should have at least 8 characters');
         return false;
     }
 };
 
-registerButton.onclick=() =>
-{
-    const usernameLength=usernameInput.value.trim().length, passwordLength=passwordInput.value.length;
+registerButton.onclick = () => {
+    const usernameLength = usernameInput.value.trim().length;
+    const passwordLength = passwordInput.value.length;
 
-    usernameInput.value=usernameInput.value.trim();
-    
-    if(usernameLength>5 && passwordLength>7)
+    usernameInput.value = usernameInput.value.trim();
+
+    if (usernameLength > 5 && passwordLength > 7) {
         form.submit();
-    else if(usernameLength==0 && passwordLength==0)
-    {
-        alert("Username and password should not be empty");
+    } else if (usernameLength == 0 && passwordLength == 0) {
+        alert('Username and password should not be empty');
         return false;
-    }
-    else if(usernameLength==0)
-    {
-        alert("Username should not be empty");
+    } else if (usernameLength == 0) {
+        alert('Username should not be empty');
         return false;
-    }
-    else if(passwordLength==0)
-    {
-        alert("Password should not be empty");
+    } else if (passwordLength == 0) {
+        alert('Password should not be empty');
         return false;
-    }
-    else if(usernameLength<6 && passwordLength<8)
-    {
-        alert("Username should have at least 6 characters and password should have at least 8 characters");
+    } else if (usernameLength < 6 && passwordLength < 8) {
+        alert('Username should have at least 6 characters and password should have at least 8 characters');
         return false;
-    }
-    else if(usernameLength<6)
-    {
-        alert("Username should have at least 6 characters");
+    } else if (usernameLength < 6) {
+        alert('Username should have at least 6 characters');
         return false;
-    }
-    else if(passwordLength<8)
-    {
-        alert("Password should have at least 8 characters");
+    } else if (passwordLength < 8) {
+        alert('Password should have at least 8 characters');
         return false;
     }
 };
 
-rememberMeText.onclick=() =>
-{
-    let rememberMeClicked=rememberMeInput.checked;
-    rememberMeInput.checked=!rememberMeClicked;
+rememberMeText.onclick = () => {
+    let rememberMeClicked = rememberMeInput.checked;
+
+    rememberMeInput.checked = !rememberMeClicked;
 };

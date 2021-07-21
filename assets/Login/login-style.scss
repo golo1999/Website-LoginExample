@@ -1,112 +1,78 @@
 @import "../common-style.scss";
-
-.main-container
-{
+.main-container {
     @include centerElementWithTransform;
     border: 1vmax solid hsla(0, 0%, 100%, .5);
     padding: 2vmax;
     background-color: $secondaryColor;
     background-clip: padding-box;
-
-    & > form
-    {
+    &>form {
         display: flex;
         flex-direction: column;
         width: fit-content;
         width: 100%;
-
-        & > span
-        {
+        &>span {
             display: flex;
             flex-direction: row;
             margin: .5vmax 0;
-
-            & > i
-            {
+            &>i {
                 background-color: $buttonAndInputIconBackgroundColor;
                 padding: 2vmin;
                 color: $whiteColor;
                 font-size: 2vmax;
             }
-
-            & > input
-            {
+            &>input {
                 background-color: silver;
                 color: $secondaryColor;
                 padding: 1vmin 2vmin;
                 flex: 1;
                 font-size: 2vmax;
-
-                &::placeholder
-                {
+                &::placeholder {
                     color: $secondaryColor;
                     font-size: 2vmax;
                 }
-
-                &:first-child
-                {
+                &:first-child {
                     margin-top: 0!important;
                 }
-            }        
+            }
         }
-
-        & > .buttons-container
-        {
+        &>.buttons-container {
             margin: .5vmax 0 .25vmax 0;
             display: flex;
-
-            & > input
-            {
+            &>input {
                 flex: 1;
                 background-color: $buttonAndInputIconBackgroundColor;
                 color: $whiteColor;
                 font-weight: bold;
                 padding: .5vmax 0;
                 font-size: 2vmax;
-
-                &:first-child
-                {
+                &:first-child {
                     margin-right: .5vmax;
                 }
-
-                &:nth-child(2)
-                {
+                &:nth-child(2) {
                     margin-left: .5vmax;
                 }
             }
         }
-
-        & > .bottom-container
-        {
+        &>.bottom-container {
             margin-top: .25vmax;
             display: flex;
             font-size: 1.5vmax;
             color: $whiteColor;
             position: relative;
-
-            & > span
-            {
+            &>span {
                 @include centerElementWithFlexbox();
-
-                & > input
-                {
+                &>input {
                     zoom: 2;
                 }
-
-                & > a
-                {
+                &>a {
                     margin-left: 1vmax;
                 }
             }
-
-            & > a
-            {
+            &>a {
                 text-decoration: none;
                 position: absolute;
                 right: 0;
-
-                &:visited
-                {
+                &:visited {
                     color: $whiteColor;
                 }
             }

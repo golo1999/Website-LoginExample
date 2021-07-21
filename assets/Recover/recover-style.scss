@@ -1,57 +1,41 @@
 @import "../common-style.scss";
-
-.main-container
-{
+.main-container {
     @include centerElementWithTransform;
     border: 1vmax solid hsla(0, 0%, 100%, .5);
     padding: 2vmax;
     background-color: $secondaryColor;
     background-clip: padding-box;
-
-    & > form
-    {
+    &>form {
         display: flex;
         flex-direction: column;
         width: fit-content;
         width: 100%;
-
-        & > span
-        {
+        &>span {
             display: flex;
             flex-direction: row;
             margin: .5vmax 0;
-
-            & > i
-            {
+            &>i {
                 background-color: $buttonAndInputIconBackgroundColor;
                 padding: 2vmin;
                 color: $whiteColor;
                 font-size: 2vmax;
             }
-
-            & > input
-            {
+            &>input {
                 background-color: silver;
                 color: $secondaryColor;
                 padding: 1vmin 2vmin;
                 flex: 1;
                 font-size: 2vmax;
-
-                &::placeholder
-                {
+                &::placeholder {
                     color: $secondaryColor;
                     font-size: 2vmax;
                 }
             }
-            
-            &:first-child
-            {
+            &:first-child {
                 margin-top: 0!important;
             }
         }
-
-        & > input
-        {
+        &>input {
             margin: .5vmax 0 .25vmax 0;
             background-color: $buttonAndInputIconBackgroundColor;
             color: $whiteColor;
@@ -59,22 +43,16 @@
             padding: .5vmax 0;
             font-size: 2vmax;
         }
-
-        & > .bottom-container
-        {
+        &>.bottom-container {
             margin-top: .25vmax;
             display: flex;
             font-size: 1.5vmax;
             color: $whiteColor;
             display: flex;
             justify-content: flex-end;
-
-            & > a
-            {
+            &>a {
                 text-decoration: none;
-
-                &:visited
-                {
+                &:visited {
                     color: $whiteColor;
                 }
             }
