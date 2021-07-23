@@ -7,6 +7,7 @@
         "bcrypt": "^5.0.1",
         "cookie-parser": "^1.4.5",
         "ejs": "^3.1.6",
+        "esm": "^3.2.25",
         "express": "^4.17.1",
         "express-session": "^1.17.1",
         "mongodb": "^3.6.5",
@@ -26,5 +27,6 @@
     "bugs": {
         "url": "https://github.com/golo1999/Website-LoginExample/issues"
     },
-    "homepage": "https://github.com/golo1999/Website-LoginExample#readme"
+    "homepage": "https://github.com/golo1999/Website-LoginExample#readme",
+    "type": "module"
 }
