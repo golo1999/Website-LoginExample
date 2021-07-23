@@ -1,11 +1,16 @@
 import mongo from 'mongodb';
 import assert from 'assert';
 import bcrypt from 'bcrypt';
+import { fileURLToPath } from 'url';
+import { dirname as folderPath } from 'path';
+
+const __filename = fileURLToPath(
+    import.meta.url
+);
 
 const mongoClient = mongo.MongoClient;
 
 const saltRounds = 10;
-
 const databaseURL = 'mongodb://localhost:127.0.0.1:27017/users';
 const usersCollectionName = 'users';
 
@@ -131,6 +136,46 @@ const recoverPassword = (username, newPassword, confirmPassword, postResponse) =
     });
 }
 
+const verifyIfUserIsAlreadyAuthenticated = (request, response) => {
+    const { cookies } = request;
+    // if the three cookies exist
+    if ('user_id' in cookies && 'username' in cookies && 'auth_type' in cookies) {
+        // creating a connection to the database
+        mongoClient.connect(databaseURL, { useNewUrlParser: true, useUnifiedTopology: true }, (err, db) => {
+            // database name
+            const databaseObject = db.db('loginDB');
+
+            assert.strictEqual(null, err);
+            databaseObject.collection(usersCollectionName).findOne({ username: cookies.username }, { username: 1 }, (err1, result) => {
+                assert.strictEqual(null, err1);
+                // redirecting to the home route if the cookie id is equal to the database user id
+                // else redirecting to the login route
+                result._id.toString() === cookies.user_id ?
+                    response.redirect(homeRoute) : res.sendFile('/login.html', { root: folderPath(__filename) });
+            });
+        });
+    }
+    // redirecting to the login route if at least one cookie doesn't exist
+    else {
+        response.sendFile('/login.html', { root: folderPath(__filename) });
+    }
+}
+
+const logoutUser = (request, response) => {
+    const { cookies } = request;
+    // if the three cookies exist
+    if ('user_id' in cookies && 'username' in cookies && 'auth_type' in cookies) {
+        response.clearCookie('user_id');
+        response.clearCookie('username');
+        response.clearCookie('auth_type');
+        response.redirect(loginRoute);
+    }
+    // if not all the cookies exist (or no cookie exists at all)
+    else {
+        response.sendFile('/login.html', { root: folderPath(__filename) });
+    }
+}
+
 export {
     assert,
     mongoClient,
@@ -149,5 +194,7 @@ export {
     routeNotFoundMessage,
     verifyLoginCredentials,
     verifyRegisterCredentials,
-    recoverPassword
+    recoverPassword,
+    verifyIfUserIsAlreadyAuthenticated,
+    logoutUser
 };

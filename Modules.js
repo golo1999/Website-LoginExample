@@ -9,9 +9,8 @@ import session from 'express-session';
 const app = express();
 const port = 3000 || process.env.PORT;
 const __filename = fileURLToPath(
-    import.meta.url);
-
-const databaseURL = utility.databaseURL;
+    import.meta.url
+);
 
 app.use('/assets', express.static(folderPath(__filename) + '/assets'));
 app.use(express.urlencoded({ extended: true }));
@@ -28,53 +27,20 @@ app.get(utility.rootRoute, (req, res) => {
 // home page route
 app.get(utility.homeRoute, (req, res) => {
     const { cookies } = req;
-    // sending the variables to the home.ejs to be rendered if the two cookies exist
+    // sending the variables to the home.ejs to be rendered if the two cookies exist and redirecting the user to home route
     // else redirecting to the login route
     ('username' in cookies && 'auth_type' in cookies) ?
-    res.render('home', { username: cookies.username, auth_type: cookies.auth_type }):
-        res.redirect(utility.loginRoute);
+    res.render('home', { username: cookies.username, auth_type: cookies.auth_type }): res.redirect(utility.loginRoute);
 });
 
 // login route
 app.get(utility.loginRoute, (req, res) => {
-    const { cookies } = req;
-    // if the three cookies exist
-    if ('user_id' in cookies && 'username' in cookies && 'auth_type' in cookies) {
-        // creating a connection to the database
-        utility.mongoClient.connect(databaseURL, { useNewUrlParser: true, useUnifiedTopology: true }, (err, db) => {
-            // database name
-            const databaseObject = db.db('loginDB');
-
-            utility.assert.strictEqual(null, err);
-            databaseObject.collection(utility.usersCollectionName).findOne({ username: cookies.username }, { username: 1 }, (err1, result) => {
-                utility.assert.strictEqual(null, err1);
-                // redirecting to the home route if the cookie id is equal to the database user id
-                // else redirecting to the login route
-                result._id.toString() === cookies.user_id ?
-                    res.redirect(utility.homeRoute) : res.sendFile('/login.html', { root: folderPath(__filename) });
-            });
-        });
-    }
-    // redirecting to the login route if at least one cookie doesn't exist
-    else {
-        res.sendFile('/login.html', { root: folderPath(__filename) });
-    }
+    utility.verifyIfUserIsAlreadyAuthenticated(req, res);
 });
 
 // logout route
 app.get(utility.logoutRoute, (req, res) => {
-    const { cookies } = req;
-    // if the three cookies exist
-    if ('user_id' in cookies && 'username' in cookies && 'auth_type' in cookies) {
-        res.clearCookie('user_id');
-        res.clearCookie('username');
-        res.clearCookie('auth_type');
-        res.redirect(utility.loginRoute);
-    }
-    // if not all the cookies exist (or no cookie exists at all)
-    else {
-        res.sendFile('/login.html', { root: folderPath(__filename) });
-    }
+    utility.logoutUser(req, res);
 });
 
 // recover password route
